@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graficador 3D - Superficies Cuadráticas</title>
+    <style>
+      body { margin: 0; overflow: hidden; font-family: sans-serif; background: #121212; color: #fff; }
+      #canvas-container { width: 100vw; height: 100vh; }
+      #ui-panel {
+        position: absolute; top: 15px; left: 15px;
+        background: rgba(30, 30, 30, 0.9); backdrop-filter: blur(8px);
+        padding: 18px; border-radius: 10px; width: 320px; z-index: 10;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5); border: 1px solid #333;
+        max-height: 90vh; overflow-y: auto;
+      }
+      h2 { margin-top: 0; font-size: 1.1rem; color: #4da6ff; }
+      .input-group { margin-bottom: 12px; }
+      label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: #ccc; }
+      input, select, button, textarea {
+        width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #444;
+        background: #222; color: #fff; box-sizing: border-box; font-size: 0.85rem;
+      }
+      button { background: #0066cc; border: none; font-weight: bold; cursor: pointer; margin-top: 8px; }
+      button:hover { background: #0052a3; }
+      .btn-manim { background: #8e44ad; }
+      .btn-manim:hover { background: #732d91; }
+      .checkbox-group { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-top: 8px; }
+      .checkbox-group input { width: auto; }
+      #info-box { margin-top: 12px; font-size: 0.8rem; background: #181818; padding: 10px; border-radius: 5px; border-left: 3px solid #0066cc; }
+      #manim-box { display: none; margin-top: 12px; }
+      textarea { font-family: monospace; height: 120px; resize: vertical; }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  </head>
+  <body>
+    <div id="ui-panel">
+      <h2>Visualizador 3D de Superficies</h2>
+      
+      <div class="input-group">
+        <label for="eq-select">Ecuación predefinida:</label>
+        <select id="eq-select">
+          <option value="paraboloide">Paraboloide (x² + y² - 4z = 0)</option>
+          <option value="silla" selected>Paraboloide Hiperbólico (z = x² - y²)</option>
+          <option value="cono">Cono (z = √(x² + y²))</option>
+          <option value="elipsoide">Elipsoide (z = √(1 - x²/4 - y²/9))</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="eq-input">O escribe z = f(x, y):</label>
+        <input type="text" id="eq-input" value="x^2 - y^2" placeholder="Ej: x^2 - y^2" />
+      </div>
+
+      <button id="btn-plot">Graficar Superficie</button>
+      <button id="btn-gen-manim" class="btn-manim">Generar Script Manim Python</button>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="check-traces" checked />
+        <label for="check-traces">Mostrar Trazas e Intersecciones</label>
+      </div>
+
+      <div id="info-box"></div>
+
+      <div id="manim-box">
+        <label><b>Código Manim (Python):</b></label>
+        <textarea id="manim-code" readonly></textarea>
+      </div>
+    </div>
+
+    <div id="canvas-container"></div>
+    <script src="/src/main.js"></script>
+  </body>
+</html>
